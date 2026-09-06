@@ -2,15 +2,20 @@
 
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { addBlog } from '../services/blogs';
-
+import { addBlog, increaseLikes } from '../services/blogs';
 
 export const createBlog = async (formData: FormData) => {
+  const title = formData.get('title') as string;
+  const author = formData.get('author') as string;
+  const url = formData.get('url') as string;
+  addBlog(title, author, url);
+  revalidatePath('/blogs');
+  redirect('/blogs');
+};
 
-    const title = formData.get('title') as string;
-    const author = formData.get('author') as string;
-    const url = formData.get('url') as string;
-    addBlog(title, author, url);
-    revalidatePath('/blogs');
-    redirect('/blogs');
-}
+export const increaseBlogLikes = async (formData: FormData) => {
+  const id = Number(formData.get('id'));
+  increaseLikes(id);
+  revalidatePath(`/blogs/${id}`);
+  revalidatePath('/blogs');
+};
