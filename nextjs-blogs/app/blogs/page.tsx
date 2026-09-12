@@ -10,13 +10,6 @@ const Blogs = async ({
 
   const blogs = await getBlogs();
 
-  const filteredBlogs = filter
-    ? blogs.filter((blog) =>
-        blog.title.toLowerCase().includes(filter.toLowerCase()),
-      )
-    : blogs;
-  const descendingOrder = [...filteredBlogs].sort((a, b) => b.likes - a.likes);
-
   return (
     <div>
       <h1>Blogs</h1>
@@ -31,7 +24,7 @@ const Blogs = async ({
         <button type="submit">Search</button>
       </form>
       <ul>
-        {descendingOrder.map((blog) => (
+        {blogs.map((blog) => (
           <li key={blog.id}>
             <Link href={`/blogs/${blog.id}`}>{blog.title}</Link>
           </li>
